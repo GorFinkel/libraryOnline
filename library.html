@@ -1,0 +1,185 @@
+<html>
+<body>
+    <style>
+  
+
+          }
+        .lib {
+            display: grid;
+            grid-template-columns: 1fr 60px;
+
+       
+
+
+          }
+          .book-cell {
+            display: grid;
+            grid-template-columns: 1fr 60px;
+            border: 1px solid rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            font-size: 5vh;
+      text-align: center;
+    
+          }
+    
+          </style>
+    <label>Book Title:      <br>
+    <input type="form" class = "book title" placeholder="War of the World"><br>
+    <label>Book Author:     <br>
+    <input type="form" class = "book author" placeholder="Tolkien"><br>
+    <label>Amount of Pages: <br>
+    <input type="form" class = "book pages" placeholder="1500"><br>
+    <label>Read it yet?     <br>
+    <input type="form" class = "book read"><br>
+    <input type = "button" class ="bu" value="Submit"><br>
+
+<div class="lib">  
+</div>
+    <script>
+        //json-server --watch db.json
+
+let server =' http://localhost:3000/posts/';
+
+function Book (title, author, pages,read,id){
+this.title = title
+this.author=author
+this.pages=pages
+this.read=read  
+this.id=id
+}
+let myLibrary = [];
+let newBook;
+let title = document.querySelector(".title")
+let author = document.querySelector(".author")
+let pages = document.querySelector(".pages")
+let read = document.querySelector(".read")
+
+function AddNewBook() {
+    let id= myLibrary.length;
+    document.querySelector(".bu").addEventListener("click", ()=> {
+if (title.value.length) {
+    newBook = new Book(title.value, author.value, pages.value,read.value,id); 
+    myLibrary.push(newBook); 
+console.log(myLibrary)
+    setData(newBook)
+    restore()
+    deleteValue();
+    }else if (!title.value.length) {
+    newBook = new Book(title.placeholder, author.placeholder, pages.placeholder,read.placeholder,id); 
+    myLibrary.push(newBook); 
+console.log(myLibrary)
+    setData(newBook)
+    restore()
+
+    deleteValue();
+    }
+    console.log('Thank You! Book added succesfully.');
+})
+}
+AddNewBook()
+
+function deleteValue() {
+title.value = ""
+ author.value = ""
+ pages.value = ""
+read.value = ""
+}
+
+let book1= new Book ("Voina i Mir", "Tolstoi", "2000", " not read")
+let book2= new Book ("Zolotaja Ribka", "Pushkin", "9", " read")
+let book3= new Book ("Aolotaja Ribka", "ashkin", "9", " read")
+
+myLibrary.push(book1); 
+myLibrary.push(book2); 
+myLibrary.push(book3); 
+
+
+// ubiraet vsjo chtobi mochno bilo post vsje zanovo iz bibliotieki
+function deleteOnScreen(){
+    document.querySelector(".lib").innerHTML=""
+}
+
+
+// postit iz biblioteki po function createWindow. delaet vsje knigi iz library po tipy createWindow
+function postOnScreen () {
+    console.log(myLibrary)
+for (let i=0; i< myLibrary.length; i++) {
+    if (myLibrary[i].title){
+    createWindow(myLibrary[i],i)
+    }
+}
+}
+//kachdaja kniga imeet takie properties
+function createWindow (item,number) {
+    let parent = document.createElement("div")
+    let content = document.createElement("div")
+    let library = document.querySelector(".lib")
+parent.className = "book-cell"     //css ramka dlja parent
+        content.innerHTML=  item.author +" " + item.title +" "+ item.pages +" pages" 
+        parent.append(content)
+
+       let deleteButton = document.createElement("button");
+       deleteButton.textContent = "delete"
+       
+       parent.append(deleteButton)
+library.append(parent)
+       deleteButton.addEventListener("click", () =>  {
+ let deleter= myLibrary.indexOf(item)
+ console.log(myLibrary[item])
+
+
+  deleteOnScreen ();
+    postOnScreen (); 
+    deleteData(number);
+    restore()
+});
+
+};
+
+
+        //json-server --watch db.json
+        function setData (){
+           
+            fetch(server, {
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            method: 'POST',
+            body: JSON.stringify(newBook)
+
+          })
+
+           }
+        
+function deleteData(number){
+    numb=number+1
+            fetch(`${server}${numb}`, {
+            headers: {"Content-type": "application/json; charset=UTF-8"},
+            method: 'PUT',
+            body: JSON.stringify({id:numb})
+          })
+        //   updateId(number)
+        
+        restore ()
+        
+           }
+
+function restore () {
+        fetch(server)
+        .then(response => response.json())
+        .then(data => {
+        object = JSON.stringify(data);
+        myLibrary=JSON.parse(object)
+        deleteOnScreen()
+        postOnScreen ()
+        console.log(myLibrary)
+        })
+        };
+        restore();
+console.log(myLibrary)
+
+
+
+
+
+</script>
+</body>
+</html>

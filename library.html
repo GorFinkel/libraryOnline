@@ -1,103 +1,23 @@
 <html lang="en">
-    <head>
+
+<head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="free book list app">
+    <meta name="keywords" content="library, book list, free app, free book list app, free book list, free library">
+    <meta name="author" content="Yaakov Gorfinkel">
+    <link rel="icon" type="image/svg+xml" href="./favicon.svg">
     <link href="./index.css" rel='stylesheet'>
     <script src="https://kit.fontawesome.com/496f047d98.js" crossorigin="anonymous"></script>
-
     <title>Book list App</title>
 </head>
+
 <body>
-    
-    <style>
-  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400&display=swap');
-
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-body {
-  font-family: 'Poppins', sans-serif;
-}
-   .bu{
-       display:flex;
-       margin-top: 5px;
-margin-left:30px;
-  display: inline-block;
-  background: steelblue;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  text-decoration: none;
-  font-size: 15px;
-  font-family: inherit;
-
-    }
-    .bu:hover {
-    background: rgb(102, 171, 228);
-
-}
-    .bu:active {
-  transform: scale(1.05);
-    background: rgb(88, 149, 199);
-
-}
-    .deleteButton{
-background: transparent;
-border:none;
-font-size:20px;
-cursor:pointer;
-color: palevioletred;
-    }
-
-.center{
-    display: flex;
-    justify-content: center;
-}
-       .container {
-  max-width: 590px;
-  margin: 30px auto;
-  overflow: auto;
-  min-height: 100px;
-  border: 1px solid steelblue;
-  padding: 30px;
-  border-radius: 5px;
-}
 
 
-.task {
-  background: #f4f4f4;
-  margin: 5px;
-  max-height: 10px;
-  padding: 10px 20px;
-
-}
-.book-cell {
-            display: grid;
-            grid-template-columns: 230px 45px 20px;
-      gap:5rem;
-          }
-     .readIt{
-         margin-left: 57px;
-                  margin-top: 10px;
-         background:transparent;
-         border:none;
-      font-size:20px;
-cursor:pointer;
-color: palevioletred;
-    
-     }
-    
-          </style>
-  
-<div class="container">  
-    <header class="center">
-<label>Book Title: <br>
+    <div class="container">
+        <header class="center">
+            <label>Book Title: <br>
     <input type="form" class="book title" placeholder="War of the World"><br>
     <label>Book Author: <br>
         <input type="form" class="book author" placeholder="Tolkien"><br>
@@ -107,207 +27,10 @@ color: palevioletred;
 <button class="readIt"><i id="reedIt" onclick=checkInOut() class="fa fa-square-o"></i></button> <br>
     <input type="button" class="bu" value="Submit"><br>
     </header>
-    <div class="lib"></div>
+    
+    <article class="lib"></article>
 </div>
-    <script>
-        //json-server --watch db.json
+<script src="./index.js"></script>
 
-let server =' http://localhost:3000/posts/';
-
-function Book (title, author, pages,read,id){
-this.title = title
-this.author=author
-this.pages=pages
-this.read=read  
-this.id=id
-}
-let myLibrary = [];
-let newBook;
-let title = document.querySelector(".title")
-let author = document.querySelector(".author")
-let pages = document.querySelector(".pages")
-let read = document.querySelector(".read")
-let readCheck
-let reedIt = document.getElementById("reedIt")
-
-
-function AddNewBook() {
-   
-    let id= myLibrary.length;
-    document.querySelector(".bu").addEventListener("click", ()=> {
-         if (reedIt.className === "fa fa-square-o") {
-            readCheck = false;
-        } else if (reedIt.className === "fa fa-check-square-o") {
-            readCheck = true;
-        }
-if (title.value.length) {
-    newBook = new Book(title.value, author.value, pages.value,readCheck,id); 
-    myLibrary.push(newBook); 
-console.log(myLibrary)
-    setData(newBook)
-    restore()
-    deleteValue();
-    }else if (!title.value.length) {
-    newBook = new Book(title.placeholder, author.placeholder, pages.placeholder,readCheck,id); 
-    myLibrary.push(newBook); 
-console.log(myLibrary)
-    setData(newBook)
-    restore()
-
-    deleteValue();
-    }
-    console.log('Thank You! Book added succesfully.');
-})
-}
-AddNewBook()
-
-function deleteValue() {
-title.value = ""
- author.value = ""
- pages.value = ""
-}
-
-let book1= new Book ("Voina i Mir", "Tolstoi", "2000", " not read")
-let book2= new Book ("Zolotaja Ribka", "Pushkin", "9", " read")
-let book3= new Book ("Aolotaja Ribka", "ashkin", "9", " read")
-
-myLibrary.push(book1); 
-myLibrary.push(book2); 
-myLibrary.push(book3); 
-
-
-// ubiraet vsjo chtobi mochno bilo post vsje zanovo iz bibliotieki
-function deleteOnScreen(){
-    document.querySelector(".lib").innerHTML=""
-}
-
-
-// postit iz biblioteki po function createWindow. delaet vsje knigi iz library po tipy createWindow
-function postOnScreen () {
-    console.log(myLibrary)
-for (let i=0; i< myLibrary.length; i++) {
-    if (myLibrary[i].title){
-    createWindow(myLibrary[i],i)
-    }
-}
-}
-//kachdaja kniga imeet takie properties
-function createWindow (item,number) {
-    let parent = document.createElement("div")
-    let content = document.createElement("div")
-    let library = document.querySelector(".lib")
-    let check=document.createElement('button')
-    let checkI=document.createElement('i')
-parent.className = "container book-cell task"     //css ramka dlja parent
-        content.innerHTML=  "<b>Title: </b>" +item.title +"<br>" +"<b> Author: </b>" + item.author +" " + "<br> " + "<h5>"+ item.pages +" pages" + "</h5>" 
-        parent.append(content)
-
-       let deleteButton = document.createElement("button");
-       deleteButton.className='deleteButton'
-       parent.append(deleteButton)
-       let faItem=document.createElement('i')
-       faItem.className="fa fa-times"
-    deleteButton.append(faItem)
-check.className='deleteButton'
-
-parent.append(check)
-if (item.read === true){ 
-    checkI.className = "fa fa-check-square-o";
-}else if (item.read ===false){
-     checkI.className = "fa fa-square-o";
-}
-    checkI.id=`k${number}`
-    checkI.onclick=function(){
-        const checkBox = document.getElementById(`k${number}`);
-            if (checkBox.className === "fa fa-square-o") {
-                checkBox.className = "fa fa-check-square-o";
-                // item.read=true
-                updateRead(number,true)
-            } else {
-                checkBox.className = "fa fa-square-o";
-                // item.read=false
-                updateRead(number,false)
-            }    
-}
-check.append(checkI)
-library.append(parent)
-       deleteButton.addEventListener("click", () =>  {
- let deleter= myLibrary.indexOf(item)
- console.log(myLibrary[item])
-
-
-  deleteOnScreen ();
-    postOnScreen (); 
-    deleteData(number);
-    restore()
-});
-
-};
-
-    function updateRead(number,value) {
-        numb = number + 1
-
-        fetch(`${server}${numb}`, {
-            headers: { "Content-type": "application/json; charset=UTF-8" },
-            method: 'PATCH',
-            body: JSON.stringify({ read: value })
-
-        });
-
-    }
-
-        //json-server --watch db.json
-        function setData (){
-           
-            fetch(server, {
-            headers: {"Content-type": "application/json; charset=UTF-8"},
-            method: 'POST',
-            body: JSON.stringify(newBook)
-
-          })
-
-           }
-        
-function deleteData(number){
-    numb=number+1
-            fetch(`${server}${numb}`, {
-            headers: {"Content-type": "application/json; charset=UTF-8"},
-            method: 'PUT',
-            body: JSON.stringify({id:numb})
-          })
-        //   updateId(number)
-        
-        restore ()
-        
-           }
-
-function restore () {
-        fetch(server)
-        .then(response => response.json())
-        .then(data => {
-        object = JSON.stringify(data);
-        myLibrary=JSON.parse(object)
-        deleteOnScreen()
-        postOnScreen ()
-        console.log(myLibrary)
-        })
-        };
-        restore();
-console.log(myLibrary)
-
-
-    function checkInOut() {
-        const checkBox = document.getElementById(`reedIt`);
-        if (checkBox.className === "fa fa-square-o") {
-            checkBox.className = "fa fa-check-square-o";
-        } else {
-            checkBox.className = "fa fa-square-o";
-        }    
-    }
-
-
-
-
-</script>
 </body>
 </html>

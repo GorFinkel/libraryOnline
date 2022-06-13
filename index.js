@@ -173,8 +173,7 @@ function restore() {
     fetch(server)
         .then((response) => response.json())
         .then((data) => {
-            object = JSON.stringify(data);
-            myLibrary = JSON.parse(object);
+            myLibrary = data
             deleteOnScreen();
             postOnScreen();
             console.log(myLibrary);

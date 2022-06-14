@@ -55,14 +55,6 @@ function deleteValue() {
     pages.value = "";
 }
 
-let book1 = new Book("Voina i Mir", "Tolstoi", "2000", " not read");
-let book2 = new Book("Zolotaja Ribka", "Pushkin", "9", " read");
-let book3 = new Book("Aolotaja Ribka", "ashkin", "9", " read");
-
-myLibrary.push(book1);
-myLibrary.push(book2);
-myLibrary.push(book3);
-
 // ubiraet vsjo chtobi mochno bilo post vsje zanovo iz bibliotieki
 function deleteOnScreen() {
     document.querySelector(".lib").innerHTML = "";
@@ -182,6 +174,7 @@ function restore() {
 restore();
 console.log(myLibrary);
 
+//click funkcia na click - vhod v html - chital ne chital fa icon
 function checkInOut() {
     const checkBox = document.getElementById(`reedIt`);
     if (checkBox.className === "fa fa-square-o") {
